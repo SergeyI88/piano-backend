@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,10 +18,11 @@ public class MainController {
     @PostMapping("/getPage")
     @ResponseBody
     public Page getPage(@RequestParam("title") String title, @RequestParam("page") String page) {
-       return Stream.of(getPage.get(title, Integer.parseInt(page)))
-               .peek(it -> it.pages = it.pages.stream()
+       return Stream.of(Optional.ofNullable(getPage.get(title, Integer.parseInt(page))))
+               .filter(Optional::isPresent)
+               .peek(it -> it.get().pages = it.get().pages.stream()
                        .distinct()
                        .collect(Collectors.toList()))
-               .findFirst().get();
+               .findFirst().orElse(Optional.empty()).orElse(null);
     }
 }
