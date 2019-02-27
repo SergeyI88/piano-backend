@@ -9,19 +9,19 @@ public class Page {
 
     @SerializedName("items")
     @Expose
-    public List<Question> pages = null;
+    private List<Question> questions = null;
 
     @SerializedName("has_more")
     @Expose
-    public Boolean hasMore;
+    private Boolean hasMore;
 
 
-    public List<Question> getItems() {
-        return pages;
+    public List<Question> getQuestions() {
+        return questions;
     }
 
-    public void setItems(List<Question> items) {
-        this.pages = items;
+    public void setItems(List<Question> questions) {
+        this.questions = questions;
     }
 
     public Boolean getHasMore() {

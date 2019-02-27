@@ -1,6 +1,7 @@
 package com.indyukov.piano.http.requests;
 
 import com.indyukov.piano.http.model.Page;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import retrofit2.GsonConverterFactory;
@@ -10,6 +11,9 @@ import java.io.IOException;
 
 @Component
 public class GetPageImpl {
+
+    private static final Logger logger = Logger.getLogger(GetPageImpl.class);
+
     @Value("${rest.url}")
     private String url;
     @Value("${site.url}")
@@ -25,9 +29,8 @@ public class GetPageImpl {
         try {
             page = getPage.get(pageNumber, title, address).execute().body();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return page;
     }
-
 }

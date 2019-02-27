@@ -4,7 +4,10 @@ import com.indyukov.piano.http.model.Page;
 import com.indyukov.piano.http.requests.GetPageImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,9 +23,9 @@ public class MainController {
     public Page getPage(@RequestParam("title") String title, @RequestParam("page") String page) {
        return Stream.of(Optional.ofNullable(getPage.get(title, Integer.parseInt(page))))
                .filter(Optional::isPresent)
-               .peek(it -> it.get().pages = it.get().pages.stream()
+               .peek(it -> it.get().setItems(it.get().getQuestions().stream()
                        .distinct()
-                       .collect(Collectors.toList()))
+                       .collect(Collectors.toList())))
                .findFirst().orElse(Optional.empty()).orElse(null);
     }
 }
